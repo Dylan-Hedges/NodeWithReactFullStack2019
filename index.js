@@ -18,6 +18,12 @@ passport.use(new GoogleStrategy(
   )
 );
 
+//authenticate with google route - specifies we want to authenticate with google and what info we want from the users account
+app.get( '/auth/google', passport.authenticate('google', {
+    scope: ['profile', 'email']
+  })
+);
+
 //Listen on the Heroku environment variable OR port 5000
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
