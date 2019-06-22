@@ -12,8 +12,10 @@ passport.use(new GoogleStrategy(
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
   },
-    (accessToken) => {
-      console.log(accessToken);
+    (accessToken, refreshToken, profile, done) => {
+      console.log('access token', accessToken);
+      console.log('refresh token', refreshToken);
+      console.log('profile', profile);
     }
   )
 );
@@ -23,6 +25,9 @@ app.get( '/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
   })
 );
+
+//callback route - puts user on hold, sends code to google, gets back user info
+app.get('/auth/google/callback', passport.authenticate('google'));
 
 //Listen on the Heroku environment variable OR port 5000
 const PORT = process.env.PORT || 5000;
