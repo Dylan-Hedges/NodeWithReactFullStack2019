@@ -1,6 +1,9 @@
 const express = require('express');
+const mongoose = require('mongoose');
 require('./services/passport');
+const keys = require('./config/keys');
 
+mongoose.connect(keys.mongoURI);
 const app = express();
 
 //Passes in Express to auth routes - Calls the arrow function in authRoutes.js passes in app
