@@ -1,7 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
-require('./services/passport');
 const keys = require('./config/keys');
+//Must come before Passport.js as the model needs to be defined first
+require('./models/User');
+//Must come after User.js as model can only be called after it is defined
+require('./services/passport');
+
 
 mongoose.connect(keys.mongoURI);
 const app = express();
