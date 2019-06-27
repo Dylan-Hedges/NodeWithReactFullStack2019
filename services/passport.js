@@ -13,9 +13,20 @@ passport.use(new GoogleStrategy(
     clientSecret: keys.googleClientSecret,
     callbackURL: '/auth/google/callback'
   },
-    (accessToken, refreshToken, profile, done) => {
-      //Creates a new record in the MongoDB (model instance)
-      new User({ googleId: profile.id}).save();
+  (accessToken, refreshToken, profile, done) => {
+    //Checks to see if user is already in the DB
+    User.findOne({ googleId: profile.id})
+      .then((existingUser)=>{
+        if(existingUser){
+          //User exists in the DB - end the callback
+          done(null, exisitingUser);
+        }else{
+          //User doesnt exist in DB - Create a new record in the MongoDB (model instance), user - this is a new model instance returned after saving to the DB
+          new User({ googleId: profile.id })
+            .save()
+            .then(user => done(null, user));
+          }
+      });
     }
   )
 );
