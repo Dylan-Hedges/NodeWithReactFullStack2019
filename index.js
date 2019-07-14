@@ -4,7 +4,7 @@ const cookieSession = require('cookie-session');
 const passport = require('passport');
 const keys = require('./config/keys');
 //Must come before Passport.js as the model needs to be defined first
-require('./models/User');
+require('./models/user');
 //Must come after User.js as model can only be called after it is defined
 require('./services/passport');
 
