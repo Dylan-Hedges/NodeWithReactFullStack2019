@@ -27,20 +27,17 @@ passport.use(new GoogleStrategy(
     callbackURL: '/auth/google/callback',
     proxy: true
   },
-  (accessToken, refreshToken, profile, done) => {
+  async (accessToken, refreshToken, profile, done) => {
     //Checks to see if user is already in the DB
-    User.findOne({ googleId: profile.id})
-      .then((existingUser)=>{
-        if(existingUser){
-          //User exists in the DB - end the callback
-          done(null, existingUser);
-        }else{
-          //User doesnt exist in DB - Create a new record in the MongoDB (model instance), user - this is a new model instance returned after saving to the DB
-          new User({ googleId: profile.id })
-            .save()
-            .then(user => done(null, user));
-          }
-      });
+    const existingUser = await User.findOne({ googleId: profile.id})
+      if(existingUser){
+        //User exists in the DB - end the callback
+        done(null, existingUser);
+      }else{
+        //User doesnt exist in DB - Create a new record in the MongoDB (model instance), user - this is a new model instance returned after saving to the DB
+        const user = await new User({ googleId: profile.id }).save()
+        done(null, user);
+      }
     }
   )
 );
