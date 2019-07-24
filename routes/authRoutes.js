@@ -6,13 +6,22 @@ module.exports = (app) => {
       scope: ['profile', 'email']
     })
   );
+
   //Route to get Google profile info  - puts user on hold, sends code to google, gets back user info
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    (req, res) => {
+      res.redirect('/surveys');
+    }
+  );
+
   //Route to log user out
   app.get('/api/logout', (req, res)=>{
     req.logout();
-    res.send(req.user);
+    res.redirect('/');
   });
+
   //Route to check current user logged in
   app.get('/api/current_user', (req, res) => {
     res.send(req.user);
