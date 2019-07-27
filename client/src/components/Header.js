@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import Payments from './Payments.js';
 
+//Displays header/nav bar along the top of the page
 class Header extends Component{
   //Displays login or logout button
   renderContent(){
@@ -16,10 +18,13 @@ class Header extends Component{
         );
       //Logged in
       default:
-        return <li><a href="/api/logout">Logout</a></li>;
+        return [
+          <li key="1"><Payments /></li>,
+          <li key="2"><a href="/api/logout">Logout</a></li>
+        ];
     }
   }
-  
+
   render(){
     return(
       <nav>
