@@ -30,6 +30,17 @@ app.use(passport.session());
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
+//-------PRODUCTION CONFIG-------
+if (process.env.NODE_ENV === 'production'){
+  //Look for a specific file in the client/build folder e.g main.js
+  app.use(express.static('client/build'));
+  //Return index.html if route not found (e.g react-router route, catach all - all other route matching has failed & cant find specific file)
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'html'));
+  });
+}
+
 //----Listen on the Heroku environment variable OR port 5000----
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
