@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production'){
   //Return index.html if route not found (e.g react-router route, catach all - all other route matching has failed & cant find specific file)
   const path = require('path');
   app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'html'));
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 }
 
