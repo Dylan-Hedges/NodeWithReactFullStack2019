@@ -10,3 +10,11 @@ export const fetchUser = () => {
     dispatch ({type: FETCH_USER, payload: res.data});
   };
 };
+
+//Sends Stripe auth token to back end (Express)
+export const handleToken = (token) =>{
+  return async (dispatch) => {
+    const res = await axios.post('/api/stripe', token);
+    dispatch ({type: FETCH_USER, payload: res.data});
+  };
+};
