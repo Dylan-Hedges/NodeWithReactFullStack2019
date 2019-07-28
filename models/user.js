@@ -3,7 +3,8 @@ const {Schema} = mongoose;
 
 //Creates the userSchema - specifies the properties for DB entries in the collection
 const userSchema = new Schema({
-  googleId: String
+  googleId: String,
+  credits: {type: Number, default: 0}
 });
 
 //Creates a mongoose model called 'users' using the userSchema

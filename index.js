@@ -12,9 +12,9 @@ require('./services/passport');
 mongoose.connect(keys.mongoURI);
 const app = express();
 
+//----------APP MIDDLEWARE--------
 //Parses POST, PUT, PATCH requests and assigns it to req.body (middleware)
 app.use(bodyParser.json());
-
 //Enables cookes in our App (using Express) - sets time it lasts (milliseconds) & an encryption key (a random string used to encrypt the cookie)
 app.use(
   cookieSession({
@@ -22,15 +22,14 @@ app.use(
     keys: [keys.cookieKey]
   })
 );
-
-//Tells passport to use cookies to manage authentication
+//----Tells passport to use cookies to manage authentication----
 app.use(passport.initialize());
 app.use(passport.session());
 
-//Passes in Express to auth routes - Calls the arrow function in authRoutes.js passes in app
+//----Passes in Express to auth routes--- Calls the arrow function in authRoutes.js passes in app
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
 
-//Listen on the Heroku environment variable OR port 5000
+//----Listen on the Heroku environment variable OR port 5000----
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
