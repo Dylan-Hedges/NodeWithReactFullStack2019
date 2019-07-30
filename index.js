@@ -30,6 +30,7 @@ app.use(passport.session());
 //----Passes in Express to auth routes--- Calls the arrow function in authRoutes.js passes in app
 require('./routes/authRoutes')(app);
 require('./routes/billingRoutes')(app);
+require('./routes/surveyRoutes')(app);
 
 //-------PRODUCTION CONFIG-------
 if (process.env.NODE_ENV === 'production'){
