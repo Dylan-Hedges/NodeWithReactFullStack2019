@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const keys = require('./config/keys');
 //Must come before Passport.js as the model needs to be defined first
 require('./models/user');
+require('./models/Survey');
 //Must come after User.js as model can only be called after it is defined
 require('./services/passport');
 
