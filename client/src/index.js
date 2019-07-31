@@ -7,6 +7,10 @@ import reduxThunk from 'redux-thunk';
 import App from './components/App.js';
 import reducers from './reducers';
 
+//Axois used for testing email sending
+import axios from 'axios';
+window.axios = axios;
+
 //Creates a new Redux Store - passes in reducers, inital state, middleware
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
