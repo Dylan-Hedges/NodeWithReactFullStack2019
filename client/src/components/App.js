@@ -3,10 +3,9 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import Header from './Header';
 import Landing from './Landing';
 import Dashboard from './Dashboard';
+import SurveyNew from './surveys/SurveyNew';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
-
-const SurveyNew = () => <h2>SurveyNew</h2>
 
 //BrowserRouter - changes components shown based on URL; Route - sets the rules for what components are shown based on the route the user is on
 class App extends Component {
