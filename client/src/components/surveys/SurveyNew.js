@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
+import SurveyForm from './SurveyForm';
 
+//Toggles between SurveyNew & SurveyForm
 class SurveyNew extends Component{
   render(){
     return(
       <div>
-        SurveyNew!
+        <SurveyForm />
       </div>
     );
   }
