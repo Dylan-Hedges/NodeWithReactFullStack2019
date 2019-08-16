@@ -11,10 +11,18 @@ export const fetchUser = () => {
   };
 };
 
-//Sends Stripe auth token to back end (Express)
+//Action Creator that Sends Stripe auth token to back end (Express)
 export const handleToken = (token) =>{
   return async (dispatch) => {
     const res = await axios.post('/api/stripe', token);
     dispatch ({type: FETCH_USER, payload: res.data});
   };
+};
+
+//Action Creator that sends the form values to the back end Express API to be mailed using SendGrid and redirects users back to the main page after they submit the form
+export const submitSurvey = (values, history) => async dispatch => {
+  console.log(values);
+  const res = await axios.post('/api/surveys', values);
+  history.push('/surveys');
+  dispatch ({type: FETCH_USER, payload: res.data});
 };

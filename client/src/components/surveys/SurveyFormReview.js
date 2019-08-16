@@ -1,17 +1,46 @@
+import _ from 'lodash';
 import React from 'react';
+import { connect } from 'react-redux';
+import formFields from './formFields';
+import { withRouter } from 'react-router-dom';
+import * as actions from '../../actions';
 
-//Display on screen what the user has entered - allows user to check and confirm everything is correct
-const SurveyFormReview = ({onCancel}) => {
-  return(
-    <div>
-      <h5>Please confirm your entries</h5>
-      <button className="yellow darken-3 btn-flat"
-      onClick={onCancel}
-      >
-      Back
-      </button>
-    </div>
-  );
+//Component that lets user view what they have typed before submitting
+const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
+	//Iterates over thearray in formFields and generates JSX for the label and name
+	const reviewFields = _.map(formFields, ({ name, label }) => {
+		//Returns html for each of our survey fields - "{formvalues[field.name]}" remember "formValues" is the new array and we want to access only the name for EACH entry, "<div key={name}>" when we produce a list of elements React wants us to have a unique key, hence why we are using the individual "name" as a key
+		return (
+			<div key={name}>
+				<label>{label}</label>
+				<div>{formValues[name]}</div>
+			</div>
+		);
+	});
+
+	//JSX for sending the survey
+	return (
+		<div>
+			<h5>Please confirm your entries</h5>
+			{reviewFields}
+			<button className="blue white-text btn-flat" onClick={onCancel}>
+				Back
+			</button>
+			<button
+				onClick={() => submitSurvey(formValues, history)}
+				className="blue btn-flat right white-text"
+			>
+				Send Survey
+				<i className="material-icons right">email</i>
+			</button>
+		</div>
+	);
 };
 
-export default SurveyFormReview;
+//Maps the Redux Store to the props of this component
+function mapStateToProps(state) {
+	return { formValues: state.form.surveyForm.values };
+}
+
+//Wires up Redux Store & Action creator & withRouter (passes in react-router history, used by AC to redirect after clikign submit)
+export default connect(mapStateToProps, actions)(withRouter(SurveyFormReview));

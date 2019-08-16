@@ -46,7 +46,7 @@ class Header extends Component{
 
 //Maps Redux store to Props - state.auth is defined in reducers index.js
 function mapStateToProps(state){
-  console.log(state)
+  // console.log(state)
   return { auth: state.auth};
 }
 
