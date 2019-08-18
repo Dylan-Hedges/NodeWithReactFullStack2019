@@ -1,3 +1,7 @@
+const _ = require('lodash');
+const {Path} = require('path-parser');
+//Helpers than can be used to parse URLs - comes with Node
+const {URL} = require('url');
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
@@ -48,7 +52,27 @@ module.exports = (app) => {
     }
   });
   app.post('/api/surveys/webhooks',(req, res) => {
-    console.log(req.body);
-    res.send({});
+    //Extracts the surveyId and choice from the URL
+    const p = new Path('/api/surveys/:surveyId/:choice');
+    //Chains .map().compact().uniqBy().values() without needing temporary varibles inbetween each
+    const events = _.chain(req.body)
+      // Maps over & extracts the survey id and choice from the URL that is generated after the user clicks yes or no
+      .map(req.body, (event) => {
+        //Extracts the route part of the URL
+        const pathname = new URL(event.url).pathname;
+        //Save the surveyId & choice into a new object (will be a new object or null if there was no surveyId or choice)
+        const match = p.test(pathname);
+        //If there is an object, return an object with only the email, survey id & choice (yes or no)
+        if (match){
+          return { email: event.email, surveyId: match.surveyId, choice: match.choice};
+        }
+      })
+      //Removes any undefined elements
+      .compact()
+      //Removes any elements that have a duplicate email AND surveyId
+      .uniqBy('email', 'surveyId')
+      //Returns the value
+      .value();
   });
+
 };
