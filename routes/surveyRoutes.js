@@ -5,14 +5,14 @@ const {URL} = require('url');
 const mongoose = require('mongoose');
 const requireLogin = require('../middlewares/requireLogin');
 const requireCredits = require('../middlewares/requireCredits');
-//Imports the survey model class
-const Survey = mongoose.model('surveys');
 const Mailer = require('../services/Mailer');
 const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
+//Imports the survey model class
+const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
-  //Route handler that displays text after clicking Yes or No
-  app.get('/api/surveys/thanks', (req, res) =>{
+  //Route handler that displays text after clicking Yes or No - :surveyID & :choice are wildcards
+  app.get('/api/surveys/:surveyId/:choice', (req, res) =>{
     res.send('Thanks for voting');
   });
   //Route handler to create a new survey & send to recipients
@@ -55,7 +55,7 @@ module.exports = (app) => {
     //Extracts the surveyId and choice from the URL
     const p = new Path('/api/surveys/:surveyId/:choice');
     //Chains .map().compact().uniqBy().values() without needing temporary varibles inbetween each
-    const events = _.chain(req.body)
+    _.chain(req.body)
       // Maps over & extracts the survey id and choice from the URL that is generated after the user clicks yes or no
       .map(req.body, (event) => {
         //Extracts the route part of the URL
@@ -71,7 +71,29 @@ module.exports = (app) => {
       .compact()
       //Removes any elements that have a duplicate email AND surveyId
       .uniqBy('email', 'surveyId')
-      //Returns the value
+      //For each element in the array extract surveyId, email & choice then execute function
+      .each(({surveyId, email, choice}) => {
+        //Finds and updates a survey with user responds - Mongo query executed on MongoDB side, more effective as we dont pass data Mongo <-> Express
+        Survey.updateOne(
+        {
+          //Find a survey with a matching survey id AND email AND responded = false
+          _id: surveyId,
+          recipients:{
+            $elemMatch: { email: email, responded: false }
+          }
+        },
+        {
+          //Increases yes or no by 1
+          $inc:{ [choice]: 1 },
+          //Sets responded to true so that user cant vote again
+          $set: { 'recipients.$.responded': true},
+          //Sets a new last responded time so client knows if responses are past deadline or if survey needs to be stopped
+          lastResponded: new Date()
+        }
+        //Sends the query to the MongoDB to be executed
+        ).exec();
+      })
+      //Returns the value (array)
       .value();
   });
 
