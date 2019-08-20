@@ -11,11 +11,22 @@ const surveyTemplate = require('../services/emailTemplates/surveyTemplate');
 const Survey = mongoose.model('surveys');
 
 module.exports = (app) => {
-  //Route handler that displays text after clicking Yes or No - :surveyID & :choice are wildcards
+  //Route Handler that retrives the users surveys
+  app.get('/api/surveys', requireLogin, async (req, res) => {
+    //Find all surveys for a particular user - compares the logged user id (req.user.id) with user ids in Mongo
+    const surveys = await Survey.find({_user: req.user.id})
+    //Specifies not to return the list of recipients with the surveys - Mongoose query, prevents huge requests being returned due to the recipients sub-document collection
+    .select({recipients: false});
+    //Sends back the surveys to the browser
+    res.send(surveys);
+  });
+
+  //RH that displays text after clicking Yes or No - :surveyID & :choice are wildcards
   app.get('/api/surveys/:surveyId/:choice', (req, res) =>{
     res.send('Thanks for voting');
   });
-  //Route handler to create a new survey & send to recipients
+
+  //RH to create a new survey & send to recipients
   app.post('/api/surveys', requireLogin, requireCredits, async (req, res) =>{
     const {title, subject, body, recipients} = req.body;
     //Creates a new instance of the Survey
@@ -51,6 +62,8 @@ module.exports = (app) => {
       res.status(422).send(err);
     }
   });
+
+  //RH for updating DB with responses - URL is created when user clicks yes or no, extracts survey id, response & email, MongoDB query that searches DB for survey and updates response = true and +1 to yes or no count
   app.post('/api/surveys/webhooks',(req, res) => {
     //Extracts the surveyId and choice from the URL
     const p = new Path('/api/surveys/:surveyId/:choice');
@@ -96,5 +109,4 @@ module.exports = (app) => {
       //Returns the value (array)
       .value();
   });
-
 };

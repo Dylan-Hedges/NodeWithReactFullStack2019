@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {FETCH_USER} from './types';
+import {FETCH_USER, FETCH_SURVEYS} from './types';
 
 //Fetch User Action Creator - Redux Thunk lets us pause automatically dispatching an action so that we can make an Ajax request to the Express API, once completed then it dispatches an action with the result to the reducers
 export const fetchUser = () => {
@@ -21,8 +21,16 @@ export const handleToken = (token) =>{
 
 //Action Creator that sends the form values to the back end Express API to be mailed using SendGrid and redirects users back to the main page after they submit the form
 export const submitSurvey = (values, history) => async dispatch => {
-  console.log(values);
+  //Makes POST request to back end
   const res = await axios.post('/api/surveys', values);
   history.push('/surveys');
   dispatch ({type: FETCH_USER, payload: res.data});
 };
+
+//AC that fetches list of surveys
+export const fetchSurveys = () => async dispatch => {
+  //Makes get request to back end for all users surveys
+  const res = await axios.get('/api/surveys');
+  //Sends array of surveys to reducer
+  dispatch({type: FETCH_SURVEYS, payload: res.data});
+}
