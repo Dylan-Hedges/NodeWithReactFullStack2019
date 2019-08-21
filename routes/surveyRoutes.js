@@ -70,14 +70,12 @@ module.exports = (app) => {
     //Chains .map().compact().uniqBy().values() without needing temporary varibles inbetween each
     _.chain(req.body)
       // Maps over & extracts the survey id and choice from the URL that is generated after the user clicks yes or no
-      .map(req.body, (event) => {
-        //Extracts the route part of the URL
-        const pathname = new URL(event.url).pathname;
-        //Save the surveyId & choice into a new object (will be a new object or null if there was no surveyId or choice)
-        const match = p.test(pathname);
+      .map(({ email, url }) => {
+        //Extracts the route part of the URL % saves the surveyId & choice into a new object (will be a new object or null if there was no surveyId or choice)
+        const match = p.test(new URL(url).pathname);
         //If there is an object, return an object with only the email, survey id & choice (yes or no)
         if (match){
-          return { email: event.email, surveyId: match.surveyId, choice: match.choice};
+          return { email, surveyId: match.surveyId, choice: match.choice };
         }
       })
       //Removes any undefined elements
@@ -108,5 +106,7 @@ module.exports = (app) => {
       })
       //Returns the value (array)
       .value();
+      res.send({});
   });
+
 };
