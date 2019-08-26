@@ -14,7 +14,7 @@ class Header extends Component{
       //Not logged in
       case false:
         return(
-          <li><a href="/auth/google">Login With Google</a></li>
+          <li><a href="/auth/google"><i className="material-icons">account_circle</i>Login</a></li>
         );
       //Logged in
       default:
@@ -28,12 +28,11 @@ class Header extends Component{
 
   render(){
     return(
-      <nav>
+      <nav id="navbar">
         <div className="nav-wrapper">
-          <Link
-            to={this.props.auth ? '/surveys' : '/'}
-            className="left brand-logo">
-            Emaily
+          <Link to={this.props.auth ? '/surveys' : '/'} id="logo">
+            <i className="material-icons">mail_outline</i>
+            SurveySend
           </Link>
           <ul className="right">
             {this.renderContent()}

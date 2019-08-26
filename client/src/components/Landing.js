@@ -2,9 +2,12 @@ import React, {Component} from 'react';
 
 const Landing = () => {
   return(
-    <div style={{ textAlign: 'center'}}>
-      <h1>Emaily</h1>
-      Collect feedback from your users.
+    <div id="landing">
+      <div className="introtext">
+        <h4>Discover what you can learn about your users</h4>
+        <h6>Sign in below are start creating surveys to send to your users</h6>
+      </div>
+      <button className="green btn-flat btn-large white-text"><strong>Discover Insights</strong></button>
     </div>
   );
 }
