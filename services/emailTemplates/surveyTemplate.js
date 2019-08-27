@@ -1,7 +1,7 @@
 const keys = require('../../config/keys');
 //Return HTML for email
 module.exports = (survey) => {
-  //Reutnrs email html - ensure the first ` is on the same line as return
+  //Defines how email to recipients will look - uses HTML, ensure the first ` is on the same line as return
   return`
       <html>
         <body>

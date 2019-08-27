@@ -27,6 +27,7 @@ passport.use(new GoogleStrategy(
     callbackURL: '/auth/google/callback',
     proxy: true
   },
+  //Executes function to find user in DB for login
   async (accessToken, refreshToken, profile, done) => {
     //Checks to see if user is already in the DB
     const existingUser = await User.findOne({ googleId: profile.id})

@@ -3,10 +3,11 @@ import { reduxForm } from 'redux-form';
 import SurveyForm from './SurveyForm';
 import SurveyFormReview from './SurveyFormReview';
 
-//Component that determines if new survey or review survey component is shown - Parent to SurveyForm & SurveyFormReview, has logic that determine if the new survey page or review survey page is shown
+//Logic component that determines if new survey or review survey component is shown - Parent to SurveyForm & SurveyFormReview, has logic that determine if the new survey page or review survey page is shown
 class SurveyNew extends Component{
   //Initalises state for component
   constructor(props){
+    //Calls parent component constructor - lets this component access props from parent component
     super(props);
     //Set inital state so that the review component is not shown on load up
     this.state = { showFormReview: false}
@@ -21,7 +22,6 @@ class SurveyNew extends Component{
     //Show new survey component
     return <SurveyForm onSurveySubmit={() => this.setState({showFormReview: true})}/>;
   }
-
   //Executes the function which determines which component to show
   render(){
     return(

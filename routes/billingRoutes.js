@@ -1,10 +1,15 @@
+//Requires in API keys
 const keys = require('../config/keys');
+//Requires in Stripe & passes in Stripe key
 const stripe = require('stripe')(keys.stripeSecretKey);
+//Middleware - checks if user is logged in
 const requireLogin = require('../middlewares/requireLogin');
 
-//Specifies the amount to charge the user (takes in Stripe auth token)
+
 module.exports = (app) => {
+  //RH used to increase number of credits & charge user (Stripe)
   app.post('/api/stripe', requireLogin, async (req, res) => {
+    //Specifies the amount to charge the user, currency and description text - takes in Stripe auth token
     const charge = await stripe.charges.create({
       amount: 500,
       currency: 'usd',

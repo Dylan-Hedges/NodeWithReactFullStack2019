@@ -1,36 +1,42 @@
 import axios from 'axios';
 import {FETCH_USER, FETCH_SURVEYS} from './types';
 
-//Fetch User Action Creator - Redux Thunk lets us pause automatically dispatching an action so that we can make an Ajax request to the Express API, once completed then it dispatches an action with the result to the reducers
+//Action Creator to fetch the logged in users info
 export const fetchUser = () => {
+  //Asyncronous AC - returns a function (not a plain object as standard), requires Redux Thunk (wired as middleware when creating Redux Store), pauses automatically dispatching an action so that we can make a request to the Express backend, once completed then it dispatches an action with containing the result to the reducers
   return async (dispatch) => {
-    //Makes a request to Express back end to check if user is logged in
+    //Gets users google id - makes a GET request to Express back end route to get users Google id
     const res = await axios.get('/api/current_user');
-    //Dispatches the action only with the users Google id
+    //Dispatches user model with user info to reducers - authReducer uses it to see if user is logged in (id exists) or not (id doesnt exist)
     dispatch ({type: FETCH_USER, payload: res.data});
   };
 };
 
-//Action Creator that Sends Stripe auth token to back end (Express)
+//AC to add credits & charge user
 export const handleToken = (token) =>{
+  //Asyncronous AC
   return async (dispatch) => {
+    //Makes charge & updates credits - makes a POST request to back end with Strpe auth token, gets back user model with updated credits, saves the response
     const res = await axios.post('/api/stripe', token);
+    //Dispatches new user model with +5 credits to reducers - authReducer updates Redux Store, components use store to display number of credits
     dispatch ({type: FETCH_USER, payload: res.data});
   };
 };
 
-//Action Creator that sends the form values to the back end Express API to be mailed using SendGrid and redirects users back to the main page after they submit the form
+//AC to create a new survey
 export const submitSurvey = (values, history) => async dispatch => {
-  //Makes POST request to back end
+  //Sends form values user typed in to the back end - sends the entered form values to the Express backend, survey is created using these values, survey + the email template are passed into a Mailer object which SendGrid uses to send emails to recipients
   const res = await axios.post('/api/surveys', values);
+  //Redirects users back to the main surveys page after they submit the form
   history.push('/surveys');
+  //Dispatches new user model with -1 credits to reducers - authReducer updates Redux Store, components use store to display number of credits
   dispatch ({type: FETCH_USER, payload: res.data});
 };
 
-//AC that fetches list of surveys
+//AC that fetches list of surveys a user has created
 export const fetchSurveys = () => async dispatch => {
-  //Makes get request to back end for all users surveys
+  //Gets all surveys user has created - makes GET request to back end, gets back an array of all the surveys the user has created
   const res = await axios.get('/api/surveys');
-  //Sends array of surveys to reducer
+  //Dispatches new user model with list of surveys user has created - surveysReducer updates Redux Store, components use to display surveys user has created
   dispatch({type: FETCH_SURVEYS, payload: res.data});
 }

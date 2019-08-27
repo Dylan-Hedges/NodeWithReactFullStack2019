@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchSurveys} from '../../actions';
 
+//Component that displays all surveys user has created on screen
 class SurveyList extends Component {
   //Grabs the list of surveys on component load - executes the AC using component lifecycle method
   componentDidMount(){
@@ -27,7 +28,6 @@ class SurveyList extends Component {
       )
     });
   }
-
   //Executes the renderSurveys function
   render(){
     return(

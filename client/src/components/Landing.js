@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
+//Display component that shows landing page when user first enters app
 const Landing = () => {
   return(
     <div id="landing">

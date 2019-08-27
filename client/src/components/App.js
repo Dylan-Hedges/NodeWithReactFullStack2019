@@ -9,11 +9,11 @@ import * as actions from '../actions';
 
 //BrowserRouter - changes components shown based on URL; Route - sets the rules for what components are shown based on the route the user is on
 class App extends Component {
-
+  //Checks user is logged in - Calls the Action Creator fetchUser() when component mounts (lifecycle method)
   componentDidMount(){
     this.props.fetchUser();
   }
-
+  //Main parent component - used for React-Router
   render(){
     return(
       <div className="container">
@@ -30,4 +30,5 @@ class App extends Component {
   }
 };
 
+//Wries AC to component
 export default connect(null, actions)(App);

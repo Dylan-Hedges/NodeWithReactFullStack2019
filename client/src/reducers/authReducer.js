@@ -1,14 +1,15 @@
 import {FETCH_USER} from '../actions/types';
 
-//Auth Reducer - Makes Redux Store aware whether or not the user is logged in
+//Reducer that updates the latest user model in Redux Store - used to check if user is logged in & increase or decrease credits
 export default function (state = null, action) {
-// console.log(action);
+  //Switch statement that looks at type sent by AC
   switch (action.type){
+    //When AC sends the type FETCH_USER
     case FETCH_USER:
-      //Returns Google Info (logged in) OR false (not logged in, returns empty string, in JS an empty string = false)
+      //Updates Redux Store with new user model passed in from fetchUser, handleToken or submitSurvey ACs - Google Info (logged in) OR false (not logged in, returns empty string, in JS an empty string = false)
       return action.payload || false;
     default:
-      //Returns null (waiting)
+      //Returns state - no changes
       return state;
   }
 }

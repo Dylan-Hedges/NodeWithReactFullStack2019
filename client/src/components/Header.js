@@ -7,6 +7,7 @@ import Payments from './Payments.js';
 class Header extends Component{
   //Displays login or logout button
   renderContent(){
+    //Switch statement that determines what to do if user is loading, needs to login or logout
     switch(this.props.auth) {
       //Loading - Show nothing
       case null:
@@ -25,7 +26,7 @@ class Header extends Component{
         ];
     }
   }
-
+  //Displays navbar on screen
   render(){
     return(
       <nav id="navbar">
@@ -43,11 +44,11 @@ class Header extends Component{
   }
 }
 
-//Maps Redux store to Props - state.auth is defined in reducers index.js
+//Maps Redux store to props of this component - state.auth is defined in reducers index.js
 function mapStateToProps(state){
   // console.log(state)
   return { auth: state.auth};
 }
 
-//Wires up Redux Store to component
+//Wires up Redux Store to this component
 export default connect(mapStateToProps)(Header);

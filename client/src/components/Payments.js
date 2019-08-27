@@ -3,7 +3,7 @@ import StripeCheckout from 'react-stripe-checkout';
 import  {connect} from 'react-redux';
 import * as actions from '../actions';
 
-//Stripe Payment Button
+//Component that displays Stripe Add Credits form after clicking add credits button in header
 class Payments extends Component{
   render(){
     return(

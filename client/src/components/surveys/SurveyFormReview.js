@@ -5,7 +5,7 @@ import formFields from './formFields';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../../actions';
 
-//Component that lets user view what they have typed before submitting
+//Component that lets user review what they have typed before submitting the survey
 const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
 	//Iterates over thearray in formFields and generates JSX for the label and name
 	const reviewFields = _.map(formFields, ({ name, label }) => {
@@ -17,8 +17,7 @@ const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
 			</div>
 		);
 	});
-
-	//JSX for sending the survey
+	//Returns JSX so user can review what they have typed and submit the form
 	return (
 		<div>
 			<h5>Please confirm your entries</h5>
@@ -36,11 +35,10 @@ const SurveyFormReview = ({ onCancel, formValues, submitSurvey, history }) => {
 		</div>
 	);
 };
-
 //Maps the Redux Store to the props of this component
 function mapStateToProps(state) {
 	return { formValues: state.form.surveyForm.values };
 }
 
-//Wires up Redux Store & Action creator & withRouter (passes in react-router history, used by AC to redirect after clikign submit)
+//Wires up Redux Store & Action creator & withRouter (passes in react-router history, used by AC to redirect after clicking submit)
 export default connect(mapStateToProps, actions)(withRouter(SurveyFormReview));

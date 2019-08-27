@@ -1,8 +1,11 @@
+//Requires in mongoose
 const mongoose = require('mongoose');
+//Requires in Schema instance from mongoose
 const {Schema} = mongoose;
+//Requires in the recipients schema - sub-document collection, used to track if users have responded
 const RecipientSchema = require('./Recipient');
 
-//Survey schema used to the create the mongoose model class
+//Creates the schema for surveys - used to the create the mongoose model class
 const surveySchema = new Schema({
   //Title for the survey
   title: String,
@@ -21,5 +24,5 @@ const surveySchema = new Schema({
   lastResponded: Date
 });
 
-//Creates a surveys model class under the name 'surveys' and loads it into mongoose
+//Creates a surveys model class using the surveySchema under the name 'surveys' and loads it into mongoose
 mongoose.model('surveys', surveySchema);
