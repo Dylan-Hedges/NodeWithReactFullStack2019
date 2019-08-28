@@ -12,7 +12,7 @@ const Landing = () => {
           <h4>Discover what you can learn about your users</h4>
           <h6>Sign in below are start creating surveys to send to your users</h6>
         </div>
-        <button className="green btn-flat btn-large white-text"><strong>Discover Insights</strong></button>
+        <a href="/auth/google"><button className="green btn-flat btn-large white-text"><strong>Discover Insights</strong></button></a>
 
       </div>
       <div className="row">
