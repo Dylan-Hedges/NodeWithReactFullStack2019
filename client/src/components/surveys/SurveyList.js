@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchSurveys} from '../../actions';
+import * as actions from '../../actions';
 
 //Component that displays all surveys user has created on screen
 class SurveyList extends Component {
@@ -23,6 +23,7 @@ class SurveyList extends Component {
           <div className="card-action">
             <a className="green-text">Yes:<span className="response">{survey.yes}</span></a>
             <a className="green-text">No:<span className="response">{survey.no}</span></a>
+            <button className="red darken-1 btn-flat white-text" onClick={() => this.props.deleteSurvey({surveyid:survey._id})}>Delete</button>
           </div>
         </div>
       )
@@ -44,4 +45,4 @@ function mapStateToProps(state){
 }
 
 //Wires up Redux Store and AC to this component
-export default connect(mapStateToProps, {fetchSurveys})(SurveyList);
+export default connect(mapStateToProps, actions)(SurveyList);

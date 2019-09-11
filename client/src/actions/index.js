@@ -40,3 +40,11 @@ export const fetchSurveys = () => async dispatch => {
   //Dispatches new user model with list of surveys user has created - surveysReducer updates Redux Store, components use to display surveys user has created
   dispatch({type: FETCH_SURVEYS, payload: res.data});
 }
+
+//AC that deletes surveys
+export const deleteSurvey = (surveyid) => async dispatch => {
+  //Sends a Mongo delete survey request to back end Express (using JSON)
+  const res = await axios.post('/api/surveys/deletesurvey', surveyid);
+  //Dispatches new user model with list of surveys user has created (array of surveys is from the RH mongoose query)
+  dispatch({type: FETCH_SURVEYS, payload: res.data});
+}

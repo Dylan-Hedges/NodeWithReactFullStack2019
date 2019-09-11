@@ -21,6 +21,7 @@ module.exports = (app) => {
     res.send(surveys);
   });
 
+
   //RH that displays text after clicking Yes or No - :surveyID & :choice are wildcards
   app.get('/api/surveys/:surveyId/:choice', (req, res) =>{
     res.send('Thanks for voting');
@@ -61,6 +62,18 @@ module.exports = (app) => {
     } catch(err){
       res.status(422).send(err);
     }
+  });
+
+  //RH that deletes a survey
+  app.post('/api/surveys/deletesurvey', async (req, res) => {
+    //Mongoose query that matches the passed in survey id in the MongoDB and deletes that survey (deletes 1 document) - await is required as this request must be completed before finding all the surveys for that user again, otherwise the page will not reflect the deleted survey
+    await Survey.deleteOne({_id: req.body.surveyid})
+    //Sends the query to the MongoDB to be executed
+    .exec();;
+    //Find all surveys for a particular user - compares the logged user id (req.user.id) with user ids in Mongo
+    const surveys = await Survey.find({_user: req.user.id}).select({recipients: false});
+    //Send back the array of surveys to the AC
+    res.send(surveys);
   });
 
   //RH for updating DB with responses - URL is created when user clicks yes or no, extracts survey id, response & email, MongoDB query that searches DB for survey and updates response = true and +1 to yes or no count

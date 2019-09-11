@@ -15,6 +15,7 @@ const app = express();
 
 //----------APP MIDDLEWARE--------
 //Parses POST, PUT, PATCH requests and assigns it to req.body (middleware)
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 //Enables cookes in our App (using Express) - sets time it lasts (milliseconds) & an encryption key (a random string used to encrypt the cookie)
 app.use(
