@@ -8,7 +8,7 @@ class Mailer extends helper.Mail{
     super();
     this.sgApi = sendgrid(keys.sendGridKey);
     //Who the email is from
-    this.from_email = new helper.Email('no-reply@feedbackapp.com');
+    this.from_email = new helper.Email(keys.sendGridSender);
     //The subject of the email
     this.subject = subject;
     //The body of the email
